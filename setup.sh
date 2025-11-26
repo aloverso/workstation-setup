@@ -16,9 +16,9 @@ source ${MY_DIR}/scripts/homebrew.sh # homebrew needs to be set up first
 source ${MY_DIR}/scripts/applications.sh
 
 # configurations and preferences
-source ${MY_DIR}/scripts/config-zsh.sh
-source ${MY_DIR}/scripts/git-aliases.sh
 source ${MY_DIR}/scripts/unix.sh
+source ${MY_DIR}/scripts/config-custom-zsh.sh # comment this out if you want to configure your own zsh
+source ${MY_DIR}/scripts/git-aliases.sh
 source ${MY_DIR}/scripts/config-mac.sh
 
 # languages and tools

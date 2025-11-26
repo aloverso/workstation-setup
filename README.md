@@ -4,7 +4,7 @@ This project automates the process of setting up a new NJ laptop.
 
 ## Getting Started
 
-Open up Terminal and run the following commands:
+Open Terminal and run the following commands:
 
 ```sh
 mkdir -p ~/workspace
