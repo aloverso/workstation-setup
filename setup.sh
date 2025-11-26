@@ -1,60 +1,42 @@
 #!/usr/bin/env bash
-#
-# setup.sh:  run the Pivotal workstation setup
-#
-# Arguments:
-#   - a list of components to install, see scripts/opt-in/ for valid options
-#
-# Environment variables:
-#   - SKIP_ANALYTICS:  Set this to 1 to not send usage data to our Google Analytics account
-#
 
 # Fail immediately if any errors occur
 set -e
 
-echo "Caching password..."
-sudo -K
-sudo true;
-clear
+# echo "Caching password..."
+# sudo -K
+# sudo true;
+# clear
 
 MY_DIR="$(dirname "$0")"
-SKIP_ANALYTICS=${SKIP_ANALYTICS:-0}
-if (( SKIP_ANALYTICS == 0 )); then
-    clientID=$(od -vAn -N4 -tx  < /dev/urandom)
-    source ${MY_DIR}/scripts/helpers/google-analytics.sh ${clientID} start $@
-else
-    export HOMEBREW_NO_ANALYTICS=1
-fi
 
-# Note: Homebrew needs to be set up first
-source ${MY_DIR}/scripts/common/homebrew.sh
-source ${MY_DIR}/scripts/common/configuration-bash.sh
+source ${MY_DIR}/scripts/homebrew.sh # homebrew needs to be set up first
 
-# Place any applications that require the user to type in their password here
-brew cask install github
-brew cask install zoomus
+# applications
+source ${MY_DIR}/scripts/applications.sh
 
-source ${MY_DIR}/scripts/common/git.sh
-source ${MY_DIR}/scripts/common/git-aliases.sh
-source ${MY_DIR}/scripts/common/applications-common.sh
-source ${MY_DIR}/scripts/common/unix.sh
-source ${MY_DIR}/scripts/common/configuration-osx.sh
-source ${MY_DIR}/scripts/common/configurations.sh
+# configurations and preferences
+source ${MY_DIR}/scripts/config-zsh.sh
+source ${MY_DIR}/scripts/git-aliases.sh
+source ${MY_DIR}/scripts/unix.sh
+source ${MY_DIR}/scripts/config-mac.sh
 
-# For each command line argument, try executing the corresponding script in opt-in/
-for var in "$@"
-do
-    echo "$var"
-    FILE=${MY_DIR}/scripts/opt-in/${var}.sh
-    echo "$FILE"
-    if [ -f $FILE ]; then
-        source ${FILE}
-    else
-       echo "Warning: $var does not appear to be a valid argument. File $FILE does not exist."
-    fi
-done
+# languages and tools
+source ${MY_DIR}/scripts/node.sh
+source ${MY_DIR}/scripts/ruby.sh
+source ${MY_DIR}/scripts/python.sh
+source ${MY_DIR}/scripts/postgres.sh
+source ${MY_DIR}/scripts/docker.sh
 
-source ${MY_DIR}/scripts/common/finished.sh
-if (( SKIP_ANALYTICS == 0 )); then
-    source ${MY_DIR}/scripts/helpers/google-analytics.sh ${clientID} finish $@
-fi
+
+echo
+echo "-----------------------------------------"
+echo "Done!"
+echo "-----------------------------------------"
+
+
+echo
+echo "After checking the above output for any problems, start a new iTerm session to make use of all the installed tools."
+echo "Rebooting is only necessary for keyboard repeat settings to work."
+
+echo
